@@ -3,26 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Section Intro: Sales Tax</title>
+    <title>Privacy Protocol: Redaction Standard</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* --- REQUIRED CSS RESET --- */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        button { font-family: inherit; font-size: inherit; font-weight: inherit; color: inherit; background: none; border: none; cursor: pointer; text-align: left; }
 
         :root {
             --navy: #2C3B4E;
+            --navy-deep: #1E2A38;
             --teal: #5E8081;
             --teal-light: rgba(94, 128, 129, 0.12);
             --brown: #AE5605;
-            --brown-light: #FDF4EB;
+            --brown-light: rgba(174, 86, 5, 0.10);
             --border-grey: #CBD5E1;
-            --off-white: #FDFCF7; /* Fixed missing colon/value from original code */
-            --white-substitute: #FDFCF7;
+            --white-sub: #FDFCF7;
+            --off-white: #F3F2EB;
+            --light-green: #D3E2D7;
             --grey: #64748B;
+            --danger-red: #B91C1C;
             --bezier: cubic-bezier(0.23, 1, 0.32, 1);
         }
 
@@ -33,273 +32,341 @@
             display: flex;
             justify-content: center;
             padding: 48px 24px;
-            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
         }
 
-        .container {
-            width: 100%;
-            max-width: 850px;
-        }
+        .wrapper { width: 100%; max-width: 1050px; }
 
-        /* --- MAIN CONTENT CARD --- */
-        .content-card {
-            background: var(--white-substitute);
-            border: 1px solid rgba(203, 213, 225, 0.5);
-            border-radius: 14px;
-            padding: 48px 40px;
-            box-shadow: 0 4px 16px rgba(44, 59, 78, 0.04);
+        /* --- HERO --- */
+        .hero {
             position: relative;
+            background: var(--navy);
+            color: var(--white-sub);
+            padding: 48px;
+            border-radius: 14px;
+            margin-bottom: 32px;
             overflow: hidden;
-            animation: fadeUp 0.6s var(--bezier) both;
+            animation: fadeUp 0.7s var(--bezier) both;
+            box-shadow: 0 8px 24px rgba(44, 59, 78, 0.15);
         }
-
-        .content-card::before {
+        .hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--teal), var(--brown));
+            top: -55%; right: -12%;
+            width: 480px; height: 480px;
+            background: radial-gradient(circle, rgba(185, 28, 28, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
-        .section-label {
-            display: flex;
+        .hero-label {
+            display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 15px; 
+            font-size: 13px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--teal);
-            margin-bottom: 12px;
+            color: #FF7B7B;
+            margin-bottom: 16px;
+            position: relative;
         }
+        .hero-label::before { content: ''; width: 20px; height: 2px; background: #FF7B7B; }
+        .hero h1 { font-size: 32px; font-weight: 900; line-height: 1.2; margin-bottom: 12px; position: relative; letter-spacing: -0.3px; }
+        .hero p { font-size: 17px; font-weight: 500; opacity: 0.9; max-width: 700px; line-height: 1.65; position: relative; }
 
-        .section-label::before {
-            content: '';
-            width: 16px;
-            height: 2px;
-            background: var(--teal);
+        /* --- INTERACTION LAYOUT --- */
+        .interaction-grid { display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: start; }
+
+        /* Left Panel */
+        .instruction-card {
+            background: var(--white-sub);
+            border: 1px solid var(--border-grey);
+            border-radius: 14px;
+            padding: 32px;
+            position: sticky;
+            top: 24px;
+            box-shadow: 0 4px 16px rgba(44, 59, 78, 0.04);
         }
-
-        .content-card h2 {
-            font-size: 32px; 
-            font-weight: 900;
-            letter-spacing: -0.3px;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            color: var(--navy);
-        }
-
-        .content-lead {
-            font-size: 19px; 
-            font-weight: 600;
-            line-height: 1.65;
-            color: var(--navy);
-            margin-bottom: 24px;
-        }
-
-        /* --- REGIONAL GRID --- */
-        .region-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-
-        .region-card {
-            background: rgba(203, 213, 225, 0.15);
-            border: 1px solid rgba(203, 213, 225, 0.4);
-            border-radius: 12px;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            transition: transform 0.3s var(--bezier), background 0.3s ease;
-        }
-
-        .region-card:hover {
-            transform: translateY(-4px);
-            background: rgba(94, 128, 129, 0.08);
-            border-color: rgba(94, 128, 129, 0.3);
-        }
-
-        .region-icon {
-            width: 44px;
-            height: 44px;
-            background: var(--white-substitute);
-            color: var(--teal);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(44, 59, 78, 0.05);
-            margin-bottom: 4px;
-        }
-
-        .region-card:nth-child(2) .region-icon {
-            color: var(--brown);
-        }
-
-        .region-icon svg {
-            width: 22px;
-            height: 22px;
-            stroke-width: 2.2;
-        }
-
-        .region-title {
-            font-size: 17px; 
+        .instruction-card h3 {
+            font-size: 15px;
             font-weight: 800;
-            color: var(--navy);
-            line-height: 1.3;
-        }
-
-        .region-desc {
-            font-size: 16px;
-            font-weight: 500;
-            line-height: 1.6;
-            color: var(--navy);
-            opacity: 0.85;
-        }
-
-        /* --- TIP BOX --- */
-        .tip-box {
-            background: var(--brown-light);
-            border-left: 5px solid var(--brown);
-            padding: 28px 32px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .tip-label {
-            font-size: 14px; 
-            font-weight: 900;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            color: var(--brown);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .tip-label svg {
-            width: 20px;
-            height: 20px;
-            stroke-width: 2.5;
+            color: var(--navy);
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(203, 213, 225, 0.5);
+            padding-bottom: 12px;
         }
 
-        .tip-text { 
-            font-size: 17px; 
-            font-weight: 500; 
-            line-height: 1.65; 
-            color: var(--navy); 
-            margin: 0; 
-            opacity: 0.9;
-        }
+        .list-section { margin-bottom: 28px; }
+        .list-title { font-size: 14px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 1px; }
+        .list-desc { font-size: 14px; font-weight: 500; color: var(--grey); margin-bottom: 16px; line-height: 1.5; }
 
-        .tip-text strong {
-            font-weight: 800;
-        }
+        .list-redact { color: var(--danger-red); }
+        .list-keep { color: var(--teal); }
 
-        /* --- BUTTON --- */
-        .btn-container {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-        }
+        .check-item { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--navy); line-height: 1.4; }
+        .check-item svg { flex-shrink: 0; margin-top: 2px; }
 
-        .test-knowledge-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--teal);
-            color: var(--white-substitute);
-            text-decoration: none;
-            padding: 16px 36px;
+        .btn-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+
+        .action-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: var(--navy);
+            color: white;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 800;
-            letter-spacing: 1px;
             text-transform: uppercase;
-            transition: background-color 0.3s var(--bezier), transform 0.2s var(--bezier);
-            box-shadow: 0 4px 12px rgba(94, 128, 129, 0.2);
+            letter-spacing: 1.5px;
+            text-align: center;
+            transition: all 0.3s var(--bezier);
+            text-decoration: none;
+            border: 2px solid var(--navy);
         }
+        .action-btn:hover { background: var(--navy-deep); border-color: var(--navy-deep); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .action-btn.active { background: var(--teal); border-color: var(--teal); }
 
-        .test-knowledge-btn:hover {
-            background-color: var(--navy);
+        .knowledge-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: transparent;
+            color: var(--navy);
+            border: 2px solid var(--navy);
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s var(--bezier);
+        }
+        .knowledge-btn:hover {
+            background: var(--navy);
+            color: white;
             transform: translateY(-2px);
-            color: var(--white-substitute);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
         }
 
-        @keyframes fadeUp {
-            0% { transform: translateY(15px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
+        /* Right Panel */
+        .statement-frame {
+            background: #fff;
+            border: 1px solid var(--border-grey);
+            border-radius: 12px;
+            padding: 48px;
+            box-shadow: 0 10px 40px rgba(44, 59, 78, 0.05);
+            position: relative;
+            overflow: hidden;
+            min-height: 800px;
         }
 
-        @media (max-width: 768px) {
-            .content-card { padding: 32px 24px; }
-            .region-grid { grid-template-columns: 1fr; gap: 16px; }
-            .tip-box { padding: 24px; }
-            .test-knowledge-btn { width: 100%; } /* Makes button full width on mobile */
+        .st-header { display: flex; justify-content: space-between; margin-bottom: 48px; border-bottom: 2px solid var(--border-grey); padding-bottom: 24px; }
+        .st-logo { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; display: flex; align-items: center; gap: 12px; }
+        .st-logo-icon { width: 36px; height: 36px; background: var(--navy); color: white; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 16px; }
+
+        .st-client-info { margin-bottom: 40px; line-height: 1.6; }
+        .st-val { font-weight: 700; color: var(--navy); font-size: 15px; }
+        .st-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: var(--grey); margin-bottom: 4px; display: block; letter-spacing: 0.5px; }
+
+        .st-section { border-top: 1px solid #eee; padding-top: 24px; margin-bottom: 32px; }
+        .st-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 32px; }
+
+        .big-number { font-size: 32px; font-weight: 900; color: var(--navy-deep); margin-top: 8px; letter-spacing: -0.5px; }
+
+        .redact-bar { position: relative; display: inline-block; }
+        .redact-bar::after {
+            content: '';
+            position: absolute;
+            top: -2px; left: -4px; right: -4px; bottom: -2px;
+            background: #000;
+            border-radius: 3px;
+            opacity: 0;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: all 0.5s var(--bezier);
+            pointer-events: none;
+        }
+        .redacted .redact-bar::after { opacity: 1; transform: scaleX(1); }
+
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 950px) {
+            .interaction-grid { grid-template-columns: 1fr; }
+            .statement-frame { padding: 32px 24px; min-height: auto; }
+            .instruction-card { position: static; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="content-card">
-        
-        <span class="section-label">Taxes & Remittance</span>
-        <h2>HST, GST, and PST: What flows through to you</h2>
-        
-        <p class="content-lead">Optimize collects sales tax on applicable revenue and flows the appropriate portion through to you on a prorated basis.</p>
+<div class="wrapper">
+    <div class="hero">
+        <span class="hero-label">Privacy Protocol</span>
+        <h1>Secure Client Submissions</h1>
+        <p>Mishandling personally identifying information (PII) is a compliance breach.</p>
+        <p style="margin-top: 16px;"><strong>Click the APPLY REDACTION STANDARD button</strong> to use the simulator below to master the Optimize redaction standard before uploading your client statements.</p>
+    </div>
 
-        <div class="region-grid">
-            <div class="region-card">
-                <div class="region-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                        <circle cx="12" cy="10" r="3"></circle>
-                    </svg>
+    <div class="interaction-grid">
+
+        <div class="instruction-card">
+            <h3>Redaction Guidelines</h3>
+
+            <div class="list-section">
+                <span class="list-title list-redact">Remove PII</span>
+                <p class="list-desc">Remove personally identifying client information:</p>
+                <div class="check-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" color="var(--danger-red)"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    Name
                 </div>
-                <div class="region-title">HST Provinces</div>
-                <div class="region-desc">In Ontario, New Brunswick, Newfoundland and Labrador, Nova Scotia, and Prince Edward Island, HST is collected and passed through.</div>
+                <div class="check-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" color="var(--danger-red)"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    Address
+                </div>
+                <div class="check-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" color="var(--danger-red)"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                    Account Number
+                </div>
             </div>
-            
-            <div class="region-card">
-                <div class="region-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
-                        <line x1="8" y1="2" x2="8" y2="18"></line>
-                        <line x1="16" y1="6" x2="16" y2="22"></line>
-                    </svg>
+
+            <div class="list-section">
+                <span class="list-title list-keep">Leave Visible</span>
+                <p class="list-desc">Do not redact the following items:</p>
+                <div class="check-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" color="var(--teal)"><polyline points="20 6 9 17 4 12"/></svg>
+                    Firm name
                 </div>
-                <div class="region-title">Non-Harmonized Provinces</div>
-                <div class="region-desc">In non-harmonized provinces, GST (and PST where applicable) is handled instead.</div>
+                <div class="check-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" color="var(--teal)"><polyline points="20 6 9 17 4 12"/></svg>
+                    Division or business unit
+                </div>
+                <div class="check-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" color="var(--teal)"><polyline points="20 6 9 17 4 12"/></svg>
+                    General account structure
+                </div>
+                <div class="check-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" color="var(--teal)"><polyline points="20 6 9 17 4 12"/></svg>
+                    Security holdings and asset mix
+                </div>
+                <div class="check-item">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" color="var(--teal)"><polyline points="20 6 9 17 4 12"/></svg>
+                    Activity summary
+                </div>
+            </div>
+
+            <div class="btn-stack">
+                <button class="action-btn" id="redactBtn" onclick="toggleRedaction()">Apply Redaction Standard</button>
+                <a href="redaction-check.html" class="knowledge-btn">Test Your Knowledge</a>
             </div>
         </div>
 
-        <div class="tip-box">
-            <span class="tip-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                </svg>
-                Important Reminder
-            </span>
-            <p class="tip-text">The sales tax that flows to you is <strong>not yours to keep</strong>. You're required to remit it to the CRA (and provincial tax authorities where applicable). This is where your HST number comes in.</p>
-        </div>
+        <div class="statement-frame" id="statement">
+            <div class="st-header">
+                <div class="st-logo">
+                    <div class="st-logo-icon">S</div>
+                    <div style="display: flex; flex-direction: column;">
+                        <span>SKYDOME FINANCIAL</span>
+                        <span style="font-size: 11px; font-weight: 800; color: var(--grey); letter-spacing: 1px; margin-top: 2px;">Private Wealth Division</span>
+                    </div>
+                </div>
+                <div style="text-align: right">
+                    <span class="st-label">Statement Period</span>
+                    <span class="st-val">July 1 – Sept 30, 2025</span>
+                </div>
+            </div>
 
-        <div class="btn-container">
-            <a href="map.html" class="test-knowledge-btn">Test Your Knowledge</a>
+            <div class="st-client-info">
+                <span class="st-label">Prepared For</span>
+                <div class="redact-bar"><span class="st-val">Charles N. Tower</span></div><br>
+                <div class="redact-bar"><span>290 Bremner Blvd,</span></div><br>
+                <div class="redact-bar"><span>Toronto, ON  M5V 3L9</span></div>
+            </div>
+
+            <div class="st-grid">
+                <div>
+                    <span class="st-label">Account Structure</span>
+                    <span class="st-val">Non-Registered Individual</span>
+                </div>
+                <div style="text-align: right">
+                    <span class="st-label">Account Number</span>
+                    <div class="redact-bar"><span class="st-val">99-842-1105</span></div>
+                </div>
+            </div>
+
+            <div class="st-section">
+                <span class="st-label">Total Portfolio Value</span>
+                <div class="big-number">$1,245,670.12</div>
+            </div>
+
+            <div class="st-section">
+                <span class="st-label">Security Holdings &amp; Asset Mix</span>
+                <div style="display:flex; gap:24px; margin-top:20px; align-items: center;">
+                    <div style="width:110px; height:110px; border-radius:50%; background:conic-gradient(var(--navy) 0% 85%, var(--teal) 85% 95%, var(--brown) 95% 100%); flex-shrink: 0;"></div>
+                    <div style="flex:1">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px;">
+                            <span style="font-weight: 600;">85% Equities</span>
+                            <span class="st-val">$1,058,819.60</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px;">
+                            <span style="font-weight: 600;">10% Fixed Income</span>
+                            <span class="st-val">$124,567.01</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; font-size:14px;">
+                            <span style="font-weight: 600;">5% Cash</span>
+                            <span class="st-val">$62,283.51</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="st-section">
+                <span class="st-label">Activity Summary (CAD)</span>
+                <table style="width:100%; border-collapse: collapse; margin-top:16px; font-size:14px;">
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 12px 0;">Opening Value</td>
+                        <td style="text-align: right;" class="st-val">$1,102,400.00</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 12px 0;">Net Contributions</td>
+                        <td style="text-align: right;" class="st-val">$15,000.00</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 12px 0;">Change in Value</td>
+                        <td style="text-align: right;" class="st-val">$128,270.12</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px 0; font-weight: 800;">Closing Value</td>
+                        <td style="text-align: right;" class="st-val">$1,245,670.12</td>
+                    </tr>
+                </table>
+            </div>
         </div>
 
     </div>
 </div>
+
+<script>
+    function toggleRedaction() {
+        const statement = document.getElementById('statement');
+        const btn = document.getElementById('redactBtn');
+
+        statement.classList.toggle('redacted');
+
+        if (statement.classList.contains('redacted')) {
+            btn.innerText = "Reset Statement";
+            btn.classList.add('active');
+        } else {
+            btn.innerText = "Apply Redaction Standard";
+            btn.classList.remove('active');
+        }
+    }
+</script>
 
 </body>
 </html>
