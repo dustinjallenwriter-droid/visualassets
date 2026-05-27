@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Samples — Dustin J. Allen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --navy: #2C3B4E;
+            --navy-deep: #1A2635;
+            --teal: #5E8081;
+            --teal-light: rgba(94, 128, 129, 0.15);
+            --brown: #AE5605;
+            --brown-light: rgba(174, 86, 5, 0.08);
+            --off-white: #F3F2EB;
+            --white-sub: #FDFCF7;
+            --border: #CBD5E1;
+            --grey: #64748B;
+            --bezier: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: var(--navy-deep);
+            color: var(--white-sub);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── HEADER ── */
+        header {
+            padding: 80px 48px 64px;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .header-label {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--teal);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.6s var(--bezier) 0.1s both;
+        }
+
+        .header-label::before {
+            content: '';
+            width: 28px;
+            height: 2px;
+            background: var(--teal);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(42px, 6vw, 72px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -1px;
+            margin-bottom: 20px;
+            opacity: 0;
+            animation: fadeUp 0.7s var(--bezier) 0.2s both;
+        }
+
+        h1 span {
+            color: var(--teal);
+        }
+
+        .header-desc {
+            font-size: 17px;
+            font-weight: 500;
+            line-height: 1.7;
+            color: rgba(253, 252, 247, 0.7);
+            max-width: 620px;
+            opacity: 0;
+            animation: fadeUp 0.7s var(--bezier) 0.3s both;
+        }
+
+        .header-meta {
+            margin-top: 32px;
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            opacity: 0;
+            animation: fadeUp 0.7s var(--bezier) 0.4s both;
+        }
+
+        .meta-pill {
+            font-size: 12px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid rgba(94, 128, 129, 0.4);
+            color: var(--teal);
+            letter-spacing: 0.5px;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(94, 128, 129, 0.3), transparent);
+            margin: 0 auto;
+            max-width: 1100px;
+            padding: 0 48px;
+        }
+        .divider-line {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(94, 128, 129, 0.3), transparent);
+        }
+
+        /* ── CARDS ── */
+        .cards-section {
+            padding: 64px 48px 96px;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .card {
+            background: rgba(253, 252, 247, 0.03);
+            border: 1px solid rgba(203, 213, 225, 0.1);
+            border-radius: 16px;
+            padding: 40px 48px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 32px;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s var(--bezier);
+            opacity: 0;
+            animation: fadeUp 0.7s var(--bezier) both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--teal), var(--brown));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s var(--bezier);
+        }
+
+        .card:hover {
+            background: rgba(253, 252, 247, 0.06);
+            border-color: rgba(94, 128, 129, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:nth-child(1) { animation-delay: 0.5s; }
+        .card:nth-child(2) { animation-delay: 0.6s; }
+        .card:nth-child(3) { animation-delay: 0.7s; }
+
+        .card-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--teal);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-number::after {
+            content: '';
+            flex: 1;
+            max-width: 32px;
+            height: 1px;
+            background: var(--teal);
+            opacity: 0.4;
+        }
+
+        .card-type {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--brown);
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 12px;
+            color: var(--white-sub);
+        }
+
+        .card-desc {
+            font-size: 15px;
+            font-weight: 500;
+            line-height: 1.65;
+            color: rgba(253, 252, 247, 0.6);
+            max-width: 580px;
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .tag {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: rgba(94, 128, 129, 0.12);
+            color: var(--teal);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .card-arrow {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 1px solid rgba(203, 213, 225, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s var(--bezier);
+            color: rgba(253, 252, 247, 0.4);
+        }
+
+        .card:hover .card-arrow {
+            border-color: var(--teal);
+            color: var(--teal);
+            transform: translateX(4px);
+            background: rgba(94, 128, 129, 0.1);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            border-top: 1px solid rgba(203, 213, 225, 0.08);
+            padding: 32px 48px;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: rgba(253, 252, 247, 0.4);
+        }
+
+        .footer-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--teal);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            transition: opacity 0.2s;
+        }
+
+        .footer-link:hover { opacity: 0.7; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 48px 24px 40px; }
+            .cards-section { padding: 40px 24px 64px; }
+            footer { padding: 24px; flex-direction: column; gap: 12px; text-align: center; }
+            .card { grid-template-columns: 1fr; padding: 32px 24px; }
+            .card-arrow { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-label">Interactive Samples</div>
+        <h1>Learning Tools &<br><span>Visual Documentation</span></h1>
+        <p class="header-desc">Three interactive modules developed for Optimize Financial Group's advisor training program. Each demonstrates a different approach to translating regulatory and procedural content into navigable, assessment-ready experiences.</p>
+        <div class="header-meta">
+            <span class="meta-pill">HTML / CSS / JS</span>
+            <span class="meta-pill">Instructional Design</span>
+            <span class="meta-pill">Financial Services</span>
+        </div>
+    </header>
+
+    <div class="divider"><div class="divider-line"></div></div>
+
+    <section class="cards-section">
+
+        <a href="map.html" class="card" target="_blank" rel="noopener">
+            <div class="card-body">
+                <div class="card-number">01</div>
+                <div class="card-type">Assessment · Geography</div>
+                <h2>Canada Sales Tax Interactive Map</h2>
+                <p class="card-desc">An interactive SVG map of Canada built from real geographic data. Advisors identify which provinces operate under a non-harmonized sales tax model (separate GST and PST) by clicking directly on the map — correct selections are confirmed in teal, incorrect ones in amber, with a running score tracker.</p>
+                <div class="card-tags">
+                    <span class="tag">SVG</span>
+                    <span class="tag">Tax Compliance</span>
+                    <span class="tag">Interactive Assessment</span>
+                </div>
+            </div>
+            <div class="card-arrow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+            </div>
+        </a>
+
+        <a href="redaction-simulator.html" class="card" target="_blank" rel="noopener">
+            <div class="card-body">
+                <div class="card-number">02</div>
+                <div class="card-type">Simulator · Privacy Compliance</div>
+                <h2>Redaction Standard Simulator</h2>
+                <p class="card-desc">A side-by-side simulator that demonstrates Optimize's PII redaction standard for client statement submissions. Advisors toggle redaction bars on and off to see exactly which fields must be blacked out before uploading documents — and which fields the transition team still needs visible.</p>
+                <div class="card-tags">
+                    <span class="tag">Privacy / PII</span>
+                    <span class="tag">Compliance Training</span>
+                    <span class="tag">Simulator</span>
+                </div>
+            </div>
+            <div class="card-arrow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+            </div>
+        </a>
+
+        <a href="redaction-check.html" class="card" target="_blank" rel="noopener">
+            <div class="card-body">
+                <div class="card-number">03</div>
+                <div class="card-type">Knowledge Check · Privacy Compliance</div>
+                <h2>Redaction Standard Knowledge Check</h2>
+                <p class="card-desc">The assessment counterpart to the simulator. Advisors are presented with a client statement and must independently identify and redact all PII fields. On submission, the module evaluates whether they redacted the right fields — flagging both missed PII and over-redaction of data the transition team requires.</p>
+                <div class="card-tags">
+                    <span class="tag">Privacy / PII</span>
+                    <span class="tag">Knowledge Check</span>
+                    <span class="tag">Scored Assessment</span>
+                </div>
+            </div>
+            <div class="card-arrow">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+            </div>
+        </a>
+
+    </section>
+
+    <footer>
+        <span class="footer-name">Dustin J. Allen</span>
+        <a href="https://dustinjallenwriter.com/portfolio" class="footer-link">Full Portfolio →</a>
+    </footer>
+
+</body>
+</html>
