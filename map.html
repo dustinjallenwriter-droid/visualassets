@@ -64,6 +64,41 @@ body {
     color: var(--navy);
     text-align: center;
 }
+	.btn-container {
+    width: 100%;
+    max-width: 920px;
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.test-knowledge-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--brown);
+    color: var(--white-substitute);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    transition: transform 0.2s var(--bezier), background 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 12px rgba(174, 86, 5, 0.18);
+}
+
+.test-knowledge-btn:hover {
+    background: #963f00;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(174, 86, 5, 0.28);
+}
+
+.test-knowledge-btn:focus-visible {
+    outline: 3px solid var(--navy);
+    outline-offset: 3px;
+}
 
 .instruction-text {
     font-size: 17px;
@@ -808,6 +843,11 @@ body {
         </div>
 
     </div>
+
+	<div class="btn-container">
+            <a href="redaction-simulator.html" class="test-knowledge-btn">Next Sample</a>
+        </div>
+
 </div>
 
 <script>
