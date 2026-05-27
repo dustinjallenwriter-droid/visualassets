@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Check: Redaction Standard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- REQUIRED CSS RESET --- */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        button { font-family: inherit; font-size: inherit; font-weight: inherit; color: inherit; line-height: inherit; background: none; border: none; padding: 0; cursor: pointer; text-align: left; outline: none; }
+
+        :root {
+            --navy: #2C3B4E;
+            --navy-deep: #1E2A38;
+            --teal: #5E8081;
+            --teal-dark: #4A6B6C; /* WCAG Pass */
+            --teal-light: rgba(94, 128, 129, 0.12);
+            --brown: #AE5605;
+            --brown-light: rgba(174, 86, 5, 0.10);
+            --border-grey: #CBD5E1;
+            --white-sub: #FDFCF7;
+            --off-white: #F3F2EB;
+            --light-green: #D3E2D7;
+            --danger-red: #B91C1C;
+            --danger-light: rgba(185, 28, 28, 0.1);
+            --grey-dark: #475569; /* WCAG 4.5:1 Pass */
+            --bezier: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--off-white);
+            color: var(--navy);
+            display: flex; justify-content: center;
+            padding: 48px 24px; -webkit-font-smoothing: antialiased;
+            line-height: 1.6;
+        }
+
+        .wrapper { width: 100%; max-width: 1050px; }
+
+        /* --- HERO --- */
+        .hero {
+            position: relative; background: var(--navy); color: var(--white-sub); padding: 56px 48px; border-radius: 20px; margin-bottom: 32px; overflow: hidden; box-shadow: 0 8px 24px rgba(44, 59, 78, 0.15);
+        }
+        .hero-label { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; color: var(--white-sub); background: var(--teal); padding: 6px 14px; border-radius: 4px; margin-bottom: 16px; position: relative; }
+        .hero h1 { font-size: 34px; font-weight: 900; line-height: 1.15; margin-bottom: 12px; letter-spacing: -0.5px; position: relative; }
+        .hero p { font-size: 18px; font-weight: 500; max-width: 700px; position: relative; }
+
+        /* --- INTERACTION LAYOUT --- */
+        .interaction-grid { display: grid; grid-template-columns: 380px 1fr; gap: 32px; align-items: start; }
+
+        .instruction-card { background: var(--white-sub); border: 1px solid var(--border-grey); border-radius: 16px; padding: 32px; position: sticky; top: 24px; box-shadow: 0 4px 16px rgba(44, 59, 78, 0.04); }
+        .inst-title { font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: 1.5px; color: var(--navy); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;}
+        .inst-desc { font-size: 16px; font-weight: 500; color: var(--navy); margin-bottom: 24px; }
+
+        .action-btn { 
+            width: 100%; padding: 20px; background: var(--navy); color: white; border-radius: 10px; 
+            font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
+            text-align: center; transition: all 0.3s var(--bezier);
+        }
+        .action-btn:hover { background: var(--teal-dark); transform: translateY(-2px); }
+        .action-btn:focus-visible { outline: 3px solid var(--brown); outline-offset: 4px; }
+
+        .feedback-box { margin-top: 24px; border-radius: 12px; padding: 24px; display: none; border: 1px solid transparent; }
+        .feedback-box.active { display: block; }
+        .feedback-box.error { background: var(--danger-light); border-color: var(--danger-red); border-left: 6px solid var(--danger-red); }
+        .feedback-box.success { background: var(--teal-light); border-color: var(--teal-dark); border-left: 6px solid var(--teal-dark); }
+        .feedback-header { font-size: 14px; font-weight: 900; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .feedback-text { font-size: 15px; font-weight: 700; line-height: 1.5; color: var(--navy-deep); }
+
+        /* Right Panel: Simulated Statement */
+        .statement-frame {
+            background: #fff; border: 1px solid var(--border-grey); border-radius: 16px; padding: 48px;
+            box-shadow: 0 10px 40px rgba(44, 59, 78, 0.05);
+        }
+        
+        .redact-zone {
+            position: relative; display: inline-block; border-radius: 4px; padding: 4px 6px; margin: -4px -6px; transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+        .redact-zone:hover { background: rgba(203, 213, 225, 0.3); border-color: var(--border-grey); }
+        .redact-zone:focus-visible { border-color: var(--brown); background: var(--brown-light); }
+
+        .redact-zone::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: #000; border-radius: 3px; opacity: 0; transform: scaleX(0);
+            transform-origin: left; transition: all 0.3s var(--bezier); pointer-events: none; z-index: 10;
+        }
+        .redact-zone.selected::after { opacity: 1; transform: scaleX(1); }
+
+        .st-header { display: flex; justify-content: space-between; margin-bottom: 48px; border-bottom: 2px solid var(--off-white); padding-bottom: 24px;}
+        .st-logo { font-size: 20px; font-weight: 900; color: var(--navy); display: flex; align-items: center; gap: 12px; }
+        .st-val { font-weight: 700; color: var(--navy); font-size: 15px; }
+        .st-label { font-size: 12px; font-weight: 800; text-transform: uppercase; color: var(--grey-dark); margin-bottom: 4px; display: block; letter-spacing: 0.5px; }
+
+        .st-section { border-top: 1px solid var(--off-white); padding-top: 24px; margin-bottom: 32px; }
+        .big-number { font-size: 32px; font-weight: 900; color: var(--navy-deep); margin-top: 8px; }
+
+        @media (max-width: 950px) {
+            .interaction-grid { grid-template-columns: 1fr; }
+            .instruction-card { position: static; margin-bottom: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="hero">
+        <span class="hero-label">Knowledge Check</span>
+        <h1>Apply the Redaction Standard</h1>
+        <p>Test your compliance knowledge. Select the sensitive fields below to apply redaction bars, then verify your work.</p>
+    </div>
+
+    <div class="interaction-grid">
+        
+        <div class="instruction-card">
+            <div class="inst-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                Instructions
+            </div>
+            <p class="inst-desc">Click the text fields within the statement below to redact <strong>Personally Identifying Information (PII)</strong>.</p>
+
+            <button class="action-btn" onclick="checkRedaction()">Check My Redaction</button>
+
+            <div class="feedback-box" id="feedbackBox" aria-live="polite">
+                <div class="feedback-header" id="feedbackTitle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" id="feedbackIcon" width="20" height="20"></svg>
+                    <span id="feedbackHeaderText"></span>
+                </div>
+                <p class="feedback-text" id="feedbackMessage"></p>
+            </div>
+        </div>
+
+        <div class="statement-frame">
+            
+            <div class="st-header">
+                <button class="redact-zone" data-type="safe" onclick="toggleZone(this)" aria-label="Redact Firm Logo" aria-pressed="false">
+                    <div class="st-logo">
+                        <div style="width:36px; height:36px; background:var(--navy); color:white; display:flex; align-items:center; justify-content:center; border-radius:6px;">S</div>
+                        <span>SKYDOME FINANCIAL</span>
+                    </div>
+                </button>
+                <div style="text-align: right">
+                    <span class="st-label">Statement Period</span>
+                    <button class="redact-zone" data-type="safe" onclick="toggleZone(this)" aria-label="Redact Statement Period" aria-pressed="false">
+                        <span class="st-val">July 1 – Sept 30, 2025</span>
+                    </button>
+                </div>
+            </div>
+
+            <div style="margin-bottom: 40px;">
+                <span class="st-label">Prepared For</span>
+                <button class="redact-zone" data-type="pii" onclick="toggleZone(this)" aria-label="Redact Client Name: Charles N. Tower" aria-pressed="false">
+                    <span class="st-val">Charles N. Tower</span>
+                </button><br>
+                <button class="redact-zone" data-type="pii" onclick="toggleZone(this)" aria-label="Redact Client Address" aria-pressed="false">
+                    <span class="st-val" style="font-weight: 500;">290 Bremner Blvd, <br>Toronto, ON  M5V 3L9</span>
+                </button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 32px;">
+                <div>
+                    <span class="st-label">Account Structure</span>
+                    <button class="redact-zone" data-type="safe" onclick="toggleZone(this)" aria-label="Redact Account Structure" aria-pressed="false">
+                        <span class="st-val">Non-Registered Individual</span>
+                    </button>
+                </div>
+                <div style="text-align: right">
+                    <span class="st-label">Account Number</span>
+                    <button class="redact-zone" data-type="pii" onclick="toggleZone(this)" aria-label="Redact Account Number: 99-842-1105" aria-pressed="false">
+                        <span class="st-val">99-842-1105</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="st-section">
+                <span class="st-label">Total Portfolio Value</span>
+                <button class="redact-zone" data-type="safe" onclick="toggleZone(this)" aria-label="Redact Portfolio Value" aria-pressed="false">
+                    <div class="big-number">$1,245,670.12</div>
+                </button>
+            </div>
+
+            <div class="st-section">
+                <span class="st-label">Asset Mix Summary</span>
+                <button class="redact-zone" data-type="safe" onclick="toggleZone(this)" style="width: 100%" aria-label="Redact Asset Mix Table" aria-pressed="false">
+                    <table style="width:100%; border-collapse: collapse; margin-top:16px; font-size:14px;">
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px 0;">85% Equities</td>
+                            <td style="text-align: right;">$1,058,819.60</td>
+                        </tr>
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 12px 0;">10% Fixed Income</td>
+                            <td style="text-align: right;">$124,567.01</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px 0;">5% Cash</td>
+                            <td style="text-align: right;">$62,283.51</td>
+                        </tr>
+                    </table>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleZone(btn) {
+        const isSelected = btn.classList.toggle('selected');
+        btn.setAttribute('aria-pressed', isSelected);
+        document.getElementById('feedbackBox').classList.remove('active');
+    }
+
+    function checkRedaction() {
+        const zones = document.querySelectorAll('.redact-zone');
+        const feedbackBox = document.getElementById('feedbackBox');
+        const feedbackIcon = document.getElementById('feedbackIcon');
+        const feedbackHeader = document.getElementById('feedbackHeaderText');
+        const feedbackMsg = document.getElementById('feedbackMessage');
+
+        let piiTotal = 0;
+        let piiSelected = 0;
+        let safeSelected = 0;
+
+        zones.forEach(zone => {
+            const isSelected = zone.classList.contains('selected');
+            const type = zone.getAttribute('data-type');
+            if (type === 'pii') {
+                piiTotal++;
+                if (isSelected) piiSelected++;
+            } else if (type === 'safe' && isSelected) {
+                safeSelected++;
+            }
+        });
+
+        feedbackBox.className = 'feedback-box active';
+
+        if (piiSelected === piiTotal && safeSelected === 0) {
+            feedbackBox.classList.add('success');
+            feedbackIcon.innerHTML = '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
+            feedbackHeader.innerText = "Standard Met";
+            feedbackMsg.innerText = "Perfect. You redacted the PII (Name, Address, Account Number) while leaving vital portfolio data intact.";
+        } 
+        else if (safeSelected > 0) {
+            feedbackBox.classList.add('error');
+            feedbackIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>';
+            feedbackHeader.innerText = "Over-Redacted";
+            feedbackMsg.innerText = "You redacted information the transition team requires (like values or firm names). Focus only on PII.";
+        }
+        else {
+            feedbackBox.classList.add('error');
+            feedbackIcon.innerHTML = '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>';
+            feedbackHeader.innerText = "Missing PII";
+            feedbackMsg.innerText = "You missed some Personally Identifying Information. Ensure the client's Name, Address, and Account Number are blacked out.";
+        }
+    }
+</script>
+
+</body>
+</html>
